@@ -1,6 +1,9 @@
 import React from "react";
 import {
   BrowserRouter,
+  HashRouter,
+  MemoryRouter,
+  StaticRouter,
   Route,
   Switch,
   NavLink,
@@ -82,37 +85,36 @@ const Links = () => (
   </nav>
 );
 
-const App = () => (
-  <BrowserRouter>
-    <div>
-      <Links />
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={({ match, location }) => (
-            <div style={styles}>
-              <h2>Home {"\u2728"}</h2>
-              {/*<p>{JSON.stringify(match)}</p>
+const LinksRoutes = () => (
+  <div>
+    <Links />
+    <Switch>
+      <Route
+        exact
+        path="/"
+        render={({ match, location }) => (
+          <div style={styles}>
+            <h2>Home {"\u2728"}</h2>
+            {/*<p>{JSON.stringify(match)}</p>
               <p>{JSON.stringify(location)}</p>*/}
-              <p>{new URLSearchParams(location.search).get("id")}</p>
-            </div>
-          )}
-        />
-        <Route path="/about" children={() => <About />} />
-        <Route path="/contact" render={() => <Contact />} />
-        {/*<Redirect from="/oldlink" to="/" />*/}
-        <Route
-          path="/new/:str"
-          children={({ match }) => <Home urlParam={match.params.str} />}
-        />
-        <Route
-          path="/oldlink/:str"
-          render={({ match }) => <Redirect to={`/new/${match.params.str}`} />}
-        />
-        <Route path="/form" children={() => <Form />} />
-        <Route render={() => <h1>Path Not Found</h1>} />
-        {/*
+            <p>{new URLSearchParams(location.search).get("id")}</p>
+          </div>
+        )}
+      />
+      <Route path="/about" children={() => <About />} />
+      <Route path="/contact" render={() => <Contact />} />
+      {/*<Redirect from="/oldlink" to="/" />*/}
+      <Route
+        path="/new/:str"
+        children={({ match }) => <Home urlParam={match.params.str} />}
+      />
+      <Route
+        path="/oldlink/:str"
+        render={({ match }) => <Redirect to={`/new/${match.params.str}`} />}
+      />
+      <Route path="/form" children={() => <Form />} />
+      <Route render={() => <h1>Path Not Found</h1>} />
+      {/*
         <Route
           path="/:page?/:subpage?"
           render={({ match }) => (
@@ -125,7 +127,7 @@ const App = () => (
           )}
         />
         */}
-        {/*
+      {/*
         <Route
           path="/:a(\d{2}-\d{2}-\d{4})/:b"
           render={({ match }) => (
@@ -138,9 +140,44 @@ const App = () => (
           )}
         />
         */}
-      </Switch>
-    </div>
+    </Switch>
+  </div>
+);
+
+const forceRefresh = () => {
+  // you can write some logic here
+  return false; // true, if you wanna call forceRefresh everytime, false if you don't
+};
+
+// for env where we can support html5 history api
+const BrowserRouterApp = () => (
+  <BrowserRouter forceRefresh={forceRefresh()}>
+    <LinksRoutes />
   </BrowserRouter>
 );
+
+// adds # at end of url... use this if the env does not support html5 history api
+const HashRouterApp = () => (
+  <HashRouter hashType="slash">
+    {/* "noslash", 'hashbang'*/}
+    <LinksRoutes />
+  </HashRouter>
+);
+
+// ideal for testing, does not change url
+const MemoryRouterApp = () => (
+  <MemoryRouter initialEntries={["/", "/about"]} initialIndex={1}>
+    <LinksRoutes />
+  </MemoryRouter>
+);
+
+// meant for server side rendering, paths dont change in url and they cant be changed from browser
+const StaticRouterApp = () => (
+  <StaticRouter location="/about" context={{}}>
+    <LinksRoutes />
+  </StaticRouter>
+);
+
+const App = () => <BrowserRouterApp />;
 
 export default App;
