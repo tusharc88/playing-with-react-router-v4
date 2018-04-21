@@ -18,6 +18,12 @@ const About = () => (
   </div>
 );
 
+const Contact = () => (
+  <div style={styles}>
+    <h2>Contact: {"\u2728"}</h2>
+  </div>
+);
+
 // manually tell if activeClassName has to be fired,
 // will fire every time route is changed
 const isActiveFunc = (match, location) => {
@@ -50,11 +56,15 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/about" children={() => <About />} />
+        <Route path="/contact" render={() => <Contact />} />
         <Route
-          path="/contact"
-          render={() => (
+          path="/:page?/:subpage?"
+          render={({ match }) => (
             <div style={styles}>
-              <h2>Contact {"\u2728"}</h2>
+              <h2>
+                Page: {match.params.page} {"\u2728"} <br />
+                Subpage: {match.params.subpage}
+              </h2>
             </div>
           )}
         />
