@@ -5,7 +5,8 @@ import {
   Switch,
   NavLink,
   Link,
-  Redirect
+  Redirect,
+  Prompt
 } from "react-router-dom";
 
 const styles = {
@@ -36,6 +37,24 @@ const Contact = () => (
   </div>
 );
 
+class Form extends React.Component {
+  state = {
+    dirty: false
+  };
+
+  setDirty = () => this.setState({ dirty: true });
+
+  render() {
+    return (
+      <div>
+        <h1>Form</h1>
+        <input type="text" onInput={this.setDirty} />
+        <Prompt when={this.state.dirty} message="data will be lost" />
+      </div>
+    );
+  }
+}
+
 // manually tell if activeClassName has to be fired,
 // will fire every time route is changed
 const isActiveFunc = (match, location) => {
@@ -59,6 +78,7 @@ const Links = () => (
       Contact
     </NavLink>
     <NavLink to={{ pathname: "/oldlink/12345" }}>Old Link</NavLink>
+    <NavLink to={{ pathname: "/form" }}>Form</NavLink>
   </nav>
 );
 
@@ -90,6 +110,7 @@ const App = () => (
           path="/oldlink/:str"
           render={({ match }) => <Redirect to={`/new/${match.params.str}`} />}
         />
+        <Route path="/form" children={() => <Form />} />
         <Route render={() => <h1>Path Not Found</h1>} />
         {/*
         <Route
