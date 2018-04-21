@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, NavLink } from "react-router-dom";
+import { BrowserRouter, Route, Switch, NavLink, Link } from "react-router-dom";
 
 const styles = {
   fontFamily: "sans-serif",
@@ -15,6 +15,10 @@ const Home = () => (
 const About = () => (
   <div style={styles}>
     <h2>About {"\u2728"}</h2>
+    <Link to="/about/address">Address</Link>
+    <Link to="/about/email">E-mail</Link>
+    <Link to="/about/phone">Phone No</Link>
+    <Route path="/about/address" render={() => <div>Address</div>} />
   </div>
 );
 
