@@ -1,14 +1,22 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, NavLink, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+  NavLink,
+  Link,
+  Redirect
+} from "react-router-dom";
 
 const styles = {
   fontFamily: "sans-serif",
   textAlign: "center"
 };
 
-const Home = () => (
+const Home = props => (
   <div style={styles}>
     <h2>Home {"\u2728"}</h2>
+    <p>{props.urlParam}</p>
   </div>
 );
 
@@ -50,6 +58,7 @@ const Links = () => (
     >
       Contact
     </NavLink>
+    <NavLink to={{ pathname: "/oldlink/12345" }}>Old Link</NavLink>
   </nav>
 );
 
@@ -72,6 +81,15 @@ const App = () => (
         />
         <Route path="/about" children={() => <About />} />
         <Route path="/contact" render={() => <Contact />} />
+        {/*<Redirect from="/oldlink" to="/" />*/}
+        <Route
+          path="/new/:str"
+          children={({ match }) => <Home urlParam={match.params.str} />}
+        />
+        <Route
+          path="/oldlink/:str"
+          render={({ match }) => <Redirect to={`/new/${match.params.str}`} />}
+        />
         <Route render={() => <h1>Path Not Found</h1>} />
         {/*
         <Route
