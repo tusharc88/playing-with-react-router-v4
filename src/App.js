@@ -57,6 +57,7 @@ const App = () => (
         <Route exact path="/" component={Home} />
         <Route path="/about" children={() => <About />} />
         <Route path="/contact" render={() => <Contact />} />
+        {/*
         <Route
           path="/:page?/:subpage?"
           render={({ match }) => (
@@ -64,6 +65,18 @@ const App = () => (
               <h2>
                 Page: {match.params.page} {"\u2728"} <br />
                 Subpage: {match.params.subpage}
+              </h2>
+            </div>
+          )}
+        />
+        */}
+        <Route
+          path="/:a(\d{2}-\d{2}-\d{4})/:b"
+          render={({ match }) => (
+            <div style={styles}>
+              <h2>
+                Parameter A: {match.params.a} {"\u2728"} <br />
+                Parameter B: {match.params.b}
               </h2>
             </div>
           )}
