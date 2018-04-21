@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter, Route, Switch, NavLink } from "react-router-dom";
 
 const styles = {
   fontFamily: "sans-serif",
@@ -18,11 +18,28 @@ const About = () => (
   </div>
 );
 
+// manually tell if activeClassName has to be fired,
+// will fire every time route is changed
+const isActiveFunc = (match, location) => {
+  return match;
+};
+
 const Links = () => (
   <nav>
-    <Link to="/">Home</Link>
-    <Link to={{ pathname: "/about" }}>About</Link>
-    <Link to="/contact">Contact</Link>
+    <NavLink exact activeClassName="active" to="/">
+      Home
+    </NavLink>
+    <NavLink activeStyle={{ color: "green" }} to={{ pathname: "/about" }}>
+      About
+    </NavLink>
+    <NavLink
+      isActive={isActiveFunc}
+      activeClassName="active"
+      replace
+      to="/contact"
+    >
+      Contact
+    </NavLink>
   </nav>
 );
 
@@ -33,7 +50,14 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/about" children={() => <About />} />
-        <Route path="/contact" render={() => <h2>Contact</h2>} />
+        <Route
+          path="/contact"
+          render={() => (
+            <div style={styles}>
+              <h2>Contact {"\u2728"}</h2>
+            </div>
+          )}
+        />
       </Switch>
     </div>
   </BrowserRouter>
