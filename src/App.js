@@ -32,7 +32,7 @@ const isActiveFunc = (match, location) => {
 
 const Links = () => (
   <nav>
-    <NavLink exact activeClassName="active" to="/">
+    <NavLink exact activeClassName="active" to="/?id=123">
       Home
     </NavLink>
     <NavLink activeStyle={{ color: "green" }} to={{ pathname: "/about" }}>
@@ -54,7 +54,18 @@ const App = () => (
     <div>
       <Links />
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route
+          exact
+          path="/"
+          render={({ match, location }) => (
+            <div style={styles}>
+              <h2>Home {"\u2728"}</h2>
+              {/*<p>{JSON.stringify(match)}</p>
+              <p>{JSON.stringify(location)}</p>*/}
+              <p>{new URLSearchParams(location.search).get("id")}</p>
+            </div>
+          )}
+        />
         <Route path="/about" children={() => <About />} />
         <Route path="/contact" render={() => <Contact />} />
         {/*
@@ -70,6 +81,7 @@ const App = () => (
           )}
         />
         */}
+        {/*
         <Route
           path="/:a(\d{2}-\d{2}-\d{4})/:b"
           render={({ match }) => (
@@ -81,6 +93,7 @@ const App = () => (
             </div>
           )}
         />
+        */}
       </Switch>
     </div>
   </BrowserRouter>
