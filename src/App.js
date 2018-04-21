@@ -68,6 +68,7 @@ const App = () => (
         />
         <Route path="/about" children={() => <About />} />
         <Route path="/contact" render={() => <Contact />} />
+        <Route render={() => <h1>Path Not Found</h1>} />
         {/*
         <Route
           path="/:page?/:subpage?"
